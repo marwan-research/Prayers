@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prayer Times</title>
+  <style>
+    body {
+      background-image: url('C:\Users\mabdelshafy\Downloads\New folder'); /* Replace 'mosque_background.jpg' with the path to your image */
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      padding: 20px;
+    }
+
+    #prayerTimes {
+      margin-top: 20px;
+    }
+
+    /* Rest of your CSS styles */
+  </style>
+</head>
+<body>
+  <h1>Prayer Times in Morocco</h1>
+  
+  <label for="cities">Choose a city:</label>
+  <select id="cities">
+    <option value="casablanca">Casablanca</option>
+    <option value="rabat">Rabat</option>
+    <option value="marrakech">Marrakech</option>
+    <!-- Add more cities as needed -->
+  </select>
+  
+  <button onclick="getPrayerTimes()">Get Prayer Times</button>
+  
+  <div id="prayerTimes"></div>
+  
+  <script>
+    function getPrayerTimes() {
+      const selectedCity = document.getElementById("cities").value;
+      const today = new Date();
+      const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+      const apiKey = 'YOUR_API_KEY'; // Replace with your API key if available
+      const apiUrl = `https://api.example.com/prayer-times?city=${selectedCity}&date=${formattedDate}&apiKey=${apiKey}`;
+      
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Assuming the API returns data in a suitable format
+          const prayerTimesTable = generatePrayerTimesTable(data);
+          document.getElementById("prayerTimes").innerHTML = prayerTimesTable;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function generatePrayerTimesTable(prayerData) {
+      // Assuming prayerData is an object containing prayer times
+      // Modify this function according to the actual structure of the returned data
+      let tableHTML = "<table>";
+      tableHTML += "<tr><th>Prayer</th><th>Time</th></tr>";
+      for (const [prayer, time] of Object.entries(prayerData)) {
+        tableHTML += `<tr><td>${prayer}</td><td>${time}</td></tr>`;
+      }
+      tableHTML += "</table>";
+      return tableHTML;
+    }
+  </script>
+</body>
+</html>
